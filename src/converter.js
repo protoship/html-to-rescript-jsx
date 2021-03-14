@@ -6,15 +6,20 @@ let s = React.string
 
 @react.component
 let make = () => {
-  <div>
+  <>
 `
 let outro = `
-  </div>
+  </>
 }
 `
 
 /* Global array where we accumulate all the converted lines */
-let result = [];
+var result;
+var indent;
+
+function spacing() {
+  return "  ".repeat(indent)
+}
 
 /* Convert aria-hidden to ariaHidden. From Facebook's html to jsx module. */
 function hyphenToCamelCase(string) {
@@ -89,9 +94,12 @@ let htmlElementToReScriptJsx = (node) => {
 
   attrsString = attrsString.join(" ")
 
-  result.push(`<${tag} ${attrsString}>`)
+  let s = spacing()
+  result.push(`${s}<${tag} ${attrsString}>`)
+  indent += 1
   node.childNodes.forEach(node => toRescriptJsx(node))
-  result.push(`</${tag}>`)
+  indent -= 1
+  result.push(`${s}</${tag}>`)
 
 }
 
@@ -100,12 +108,12 @@ let toRescriptJsx = node => {
   if (i == Node.TEXT_NODE) {
     let t = node.rawText.trim()
     if (t.length > 0) {
-      result.push(`{s("${t}")}`)
+      result.push(`${spacing()}{s("${t}")}`)
     }
   } else if (i == Node.COMMENT_NODE) {
     let t = node.rawText.trim()
     if (t.length > 0) {
-      result.push(`/* ${t} */`)
+      result.push(`${spacing()}/* ${t} */`)
     }
   } else if (i == Node.ELEMENT_NODE) {
     htmlElementToReScriptJsx(node)
@@ -114,7 +122,10 @@ let toRescriptJsx = node => {
 
 let run = (t) => {
   if (!t)
-    t = document.getElementById("input").value;
+    t = document.getElementById("inputHtml").value;
+
+  result = []
+  indent = 1
 
   const root = parse(t,
     {
@@ -130,12 +141,14 @@ let run = (t) => {
   );
 
   result.push(intro)
-  root.childNodes.forEach(node => accumulate(node))
+  indent += 1
+  root.childNodes.forEach(node => toRescriptJsx(node))
+  indent -= 1
   result.push(outro)
 
   result = result.join("\n")
 
-  document.getElementById("output").innerText = result
+  document.getElementById("outputReScript").innerText = result
 }
 
 export { run };

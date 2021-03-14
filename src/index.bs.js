@@ -2,34 +2,48 @@
 
 import * as React from "react";
 import * as ReactDom from "react-dom";
-import * as Renderer from "./renderer";
+import * as Clipboard from "./clipboard";
+import * as Converter from "./converter";
 import * as SampleData$ReactResTest from "./SampleData.bs.js";
 
-function renderer(prim) {
-  Renderer.run(prim);
+function convert(prim) {
+  Converter.run();
+  
+}
+
+function copyOutputToClipboard(prim) {
+  Clipboard.copyOutputToClipboard();
   
 }
 
 function Index$App(Props) {
-  return React.createElement("main", undefined, React.createElement("div", undefined, "HTML-to-ReScript-JSX"), React.createElement("div", {
+  React.useEffect(function () {
+        Converter.run();
+        
+      });
+  return React.createElement("div", undefined, React.createElement("div", {
                   className: "flex"
                 }, React.createElement("div", undefined, React.createElement("textarea", {
                           defaultValue: SampleData$ReactResTest.initialData,
-                          id: "input",
-                          style: {
-                            fontFamily: "monospace",
-                            height: "400px",
-                            marginTop: "40px",
-                            width: "400px"
-                          }
+                          id: "inputHtml",
+                          onFocus: (function ($$event) {
+                              return $$event.currentTarget.select();
+                            })
                         }), React.createElement("button", {
+                          className: "convert",
                           onClick: (function (param) {
-                              Renderer.run(null);
+                              Converter.run();
                               
                             })
-                        }, "Convert")), React.createElement("div", undefined, React.createElement("p", {
-                          id: "output"
-                        }))));
+                        }, "Convert HTML to ReScript JSX component")), React.createElement("div", undefined, React.createElement("p", {
+                          id: "outputReScript"
+                        }), React.createElement("button", {
+                          className: "copyToClipboard",
+                          onClick: (function (param) {
+                              Clipboard.copyOutputToClipboard();
+                              
+                            })
+                        }, "Copy to clipboard"))));
 }
 
 var App = {
@@ -44,13 +58,9 @@ if (root == null) {
   ReactDom.render(React.createElement(Index$App, {}), root);
 }
 
-setTimeout((function (param) {
-        Renderer.run(SampleData$ReactResTest.initialData);
-        
-      }), 200);
-
 export {
-  renderer ,
+  convert ,
+  copyOutputToClipboard ,
   App ,
   
 }
