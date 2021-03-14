@@ -1,13 +1,12 @@
 {
-  "name": "react-res-test",
+  "name": "html-to-rescript-jsx",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "clean": "bsb -clean-world",
-    "start": "bsb -make-world -w",
+    "start": "bsb -clean-world -make-world -w",
     "dev": "snowpack dev",
-    "build": "snowpack build"
+    "build": "bsb -clean-world -make-world && snowpack build"
   },
   "keywords": [],
   "author": "",

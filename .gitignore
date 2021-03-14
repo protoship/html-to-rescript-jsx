@@ -118,3 +118,6 @@ dist
 lib/bs
 .bsb.lock
 .merlin
+./deploy.sh
+build
+deploy.sh
