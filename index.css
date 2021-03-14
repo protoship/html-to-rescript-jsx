@@ -1,0 +1,28 @@
+body {
+  max-width: 95%;
+  margin: 0 auto;
+}
+
+#root {
+  font-size: 40px;
+  margin-top: 40px;
+}
+
+button {
+  margin: 0 auto;
+  width: 200px;
+  height: 40px;
+  display: block;
+  margin-top: 40px;
+}
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+}
+
+p#output {
+  font-family: monospace;
+  font-size: 12px;
+  white-space: pre;
+}
