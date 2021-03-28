@@ -21,6 +21,32 @@ function spacing() {
   return "  ".repeat(indent)
 }
 
+function isVoidElement(el){
+  return [ 'area',
+  'base',
+  'basefont',
+  'bgsound',
+  'br',
+  'col',
+  'command',
+  'embed',
+  'frame',
+  'hr',
+  'image',
+  'img',
+  'input',
+  'isindex',
+  'keygen',
+  'link',
+  'menuitem',
+  'meta',
+  'nextid',
+  'param',
+  'source',
+  'track',
+  'wbr' ].includes(el)
+}
+
 /* Convert aria-hidden to ariaHidden. From Facebook's html to jsx module. */
 function hyphenToCamelCase(string) {
   return string.replace(/-(.)/g, function (match, chr) {
@@ -95,11 +121,15 @@ let htmlElementToReScriptJsx = (node) => {
   attrsString = attrsString.join(" ")
 
   let s = spacing()
-  result.push(`${s}<${tag} ${attrsString}>`)
-  indent += 1
-  node.childNodes.forEach(node => toRescriptJsx(node))
-  indent -= 1
-  result.push(`${s}</${tag}>`)
+  if(isVoidElement(tag)){
+    result.push(`${s}<${tag} ${attrsString} />`)
+  }else{
+    result.push(`${s}<${tag} ${attrsString}>`)
+    indent += 1
+    node.childNodes.forEach(node => toRescriptJsx(node))
+    indent -= 1
+    result.push(`${s}</${tag}>`)
+  }
 
 }
 
