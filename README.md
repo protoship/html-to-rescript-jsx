@@ -9,4 +9,6 @@
 | `npm run dev` | Will start the `snowpack` server |
 
 
-Based on Rescript-React Starter https://github.com/arnabsen1729/rescript-react-starter
+Based on:
+* Rescript-React Starter https://github.com/arnabsen1729/rescript-react-starter
+* https://github.com/littlehaker/html-to-jsx
