@@ -35,7 +35,7 @@ function Index$App(Props) {
                               Converter.run();
                               
                             })
-                        }, "Convert HTML to ReScript JSX component")), React.createElement("div", undefined, React.createElement("p", {
+                        }, "1. Convert HTML to ReScript JSX component")), React.createElement("div", undefined, React.createElement("p", {
                           id: "outputReScript"
                         }), React.createElement("button", {
                           className: "copyToClipboard",
@@ -43,7 +43,7 @@ function Index$App(Props) {
                               Clipboard.copyOutputToClipboard();
                               
                             })
-                        }, "Copy to clipboard"))));
+                        }, "2. Copy to clipboard"))));
 }
 
 var App = {

@@ -18,13 +18,13 @@ module App = {
             defaultValue={SampleData.initialData}
           />
           <button className="convert" onClick={_ => convert()}>
-            {React.string("Convert HTML to ReScript JSX component")}
+            {React.string("1. Convert HTML to ReScript JSX component")}
           </button>
         </div>
         <div>
           <p id="outputReScript" />
           <button className="copyToClipboard" onClick={_ => copyOutputToClipboard()}>
-            {React.string("Copy to clipboard")}
+            {React.string("2. Copy to clipboard")}
           </button>
         </div>
       </div>
