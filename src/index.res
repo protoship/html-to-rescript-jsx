@@ -7,8 +7,13 @@ type debouncedFn = unit => unit
 
 @module("./converter") external convert: string => string = "convertWithIntroOutro"
 @module("./clipboard") external copyOutputToClipboard: unit => unit = "copyOutputToClipboard"
+@module("lz-string")
+external compressToEncodedURIComponent: string => string = "compressToEncodedURIComponent"
 
 @val external document: {..} = "document"
+
+@scope("window") @val
+external windowOpen: string => unit = "open"
 
 let convert = () => {
   let inputDom = document["getElementById"]("inputHtml")
@@ -30,6 +35,14 @@ let clipboardIcon =
       strokeLinejoin="round"
       strokeWidth="2"
       d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"
+    />
+  </svg>
+let playIcon =
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+    <path
+      fillRule="evenodd"
+      d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
+      clipRule="evenodd"
     />
   </svg>
 
@@ -58,13 +71,28 @@ module App = {
             />
           </div>
           <div className="text-white bg-gray-900">
-            <button
-              id="btn-copyToClipboard"
-              className="flex items-center w-full text-gray-100 bg-blue-800 text-lg p-4 hover:bg-blue-900 hover:text-white"
-              onClick={_ => copyOutputToClipboard()}>
-              <div className="w-8 h-8 mr-4"> {clipboardIcon} </div>
-              <p> {s("Click here to copy the converted code to clipboard")} </p>
-            </button>
+            <div className="grid grid-cols-2">
+              <button
+                id="btn-copyToClipboard"
+                className="col-span-1 flex items-center w-full text-gray-100 bg-blue-800 text-base p-2 hover:bg-indigo-900 hover:text-white"
+                onClick={_ => copyOutputToClipboard()}>
+                <div className="w-6 h-6 ml-2 mr-2"> {clipboardIcon} </div>
+                <p> {s("Copy to clipboard")} </p>
+              </button>
+              <button
+                className="col-span-1 flex items-center w-full text-gray-100 bg-indigo-800 text-base p-2 hover:bg-blue-900 hover:text-white"
+                onClick={_ => {
+                  windowOpen(
+                    "https://rescript-lang.org/try?code=" ++
+                    compressToEncodedURIComponent(
+                      document["getElementById"]("outputReScript")["innerText"],
+                    ),
+                  )
+                }}>
+                <div className="w-6 h-6 ml-2 mr-2"> {playIcon} </div>
+                <p> {s("Open in ReScript playground")} </p>
+              </button>
+            </div>
             <p
               className="p-6 text-xs font-mono whitespace-pre overflow-scroll"
               style={editorStyle}

@@ -2,6 +2,7 @@
 
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
+import * as LzString from "lz-string";
 import * as ReactDom from "react-dom";
 import * as Clipboard from "./clipboard";
 import * as Converter from "./converter";
@@ -44,6 +45,16 @@ var clipboardIcon = React.createElement("svg", {
           strokeWidth: "2"
         }));
 
+var playIcon = React.createElement("svg", {
+      fill: "currentColor",
+      viewBox: "0 0 20 20",
+      xmlns: "http://www.w3.org/2000/svg"
+    }, React.createElement("path", {
+          clipRule: "evenodd",
+          d: "M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z",
+          fillRule: "evenodd"
+        }));
+
 function Index$App(Props) {
   React.useEffect(function () {
         convert(undefined);
@@ -72,16 +83,26 @@ function Index$App(Props) {
                                   })
                               })), React.createElement("div", {
                             className: "text-white bg-gray-900"
-                          }, React.createElement("button", {
-                                className: "flex items-center w-full text-gray-100 bg-blue-800 text-lg p-4 hover:bg-blue-900 hover:text-white",
-                                id: "btn-copyToClipboard",
-                                onClick: (function (param) {
-                                    Clipboard.copyOutputToClipboard();
-                                    
-                                  })
-                              }, React.createElement("div", {
-                                    className: "w-8 h-8 mr-4"
-                                  }, clipboardIcon), React.createElement("p", undefined, "Click here to copy the converted code to clipboard")), React.createElement("p", {
+                          }, React.createElement("div", {
+                                className: "grid grid-cols-2"
+                              }, React.createElement("button", {
+                                    className: "col-span-1 flex items-center w-full text-gray-100 bg-blue-800 text-base p-2 hover:bg-indigo-900 hover:text-white",
+                                    id: "btn-copyToClipboard",
+                                    onClick: (function (param) {
+                                        Clipboard.copyOutputToClipboard();
+                                        
+                                      })
+                                  }, React.createElement("div", {
+                                        className: "w-6 h-6 ml-2 mr-2"
+                                      }, clipboardIcon), React.createElement("p", undefined, "Copy to clipboard")), React.createElement("button", {
+                                    className: "col-span-1 flex items-center w-full text-gray-100 bg-indigo-800 text-base p-2 hover:bg-blue-900 hover:text-white",
+                                    onClick: (function (param) {
+                                        window.open("https://rescript-lang.org/try?code=" + LzString.compressToEncodedURIComponent(document.getElementById("outputReScript").innerText));
+                                        
+                                      })
+                                  }, React.createElement("div", {
+                                        className: "w-6 h-6 ml-2 mr-2"
+                                      }, playIcon), React.createElement("p", undefined, "Open in ReScript playground"))), React.createElement("p", {
                                 className: "p-6 text-xs font-mono whitespace-pre overflow-scroll",
                                 id: "outputReScript",
                                 style: editorStyle
@@ -107,6 +128,7 @@ export {
   updateConversionResult ,
   s ,
   clipboardIcon ,
+  playIcon ,
   App ,
   
 }
