@@ -1,5 +1,7 @@
 import { parse } from 'node-html-parser';
 import { htmlCasedAttrs } from './htmlCasedAttrs';
+import { AllHtmlEntities as Entities } from "html-entities"
+import { isReservedKeyword, mangleNameAsAttribute } from "./ReasonHelper.bs"
 
 let intro = `
 let s = React.string
@@ -108,6 +110,7 @@ let htmlElementToReScriptJsx = (node) => {
     if (isBooleanAttr(key)) {
       value = toBooleanValue(value)
     } else if (key == 'style') {
+      value = replaceStyle(value)
     } else if (isUnsupportedInRescript(key)) {
       value = null
       key = null
@@ -179,6 +182,66 @@ let run = (t) => {
   result = result.join("\n")
 
   document.getElementById("outputReScript").innerText = result
+}
+
+
+const DASH = /[-|_|:]([a-z])/g;
+const MS = /^Ms/g;
+
+function capitalize(match) {
+  return match[1].toUpperCase();
+}
+
+function camelCase(property) {
+  const mid = property.replace(DASH, capitalize).replace(MS, "ms");
+  const final = lowerCaseFirst(mid);
+
+  return final;
+}
+
+function lowerCaseFirst(s) {
+  return s.charAt(0).toLowerCase() + s.slice(1);
+}
+
+const escapeQuotes = (string) => {
+  if (typeof string === "string") {
+    return string.replace(/"/g, '\\"');
+  }
+
+  return string;
+};
+
+function replaceStyle(styleString) {
+  const entities = new Entities();
+  const styles = entities
+    .decode(styleString)
+    .trim()
+    .split(";")
+    .map((style) => {
+      if (style.trim() == "") {
+        return "";
+      }
+      const safeStyle = style
+        .split(/\n/)
+        .map((piece) => piece.trim())
+        .join("");
+      const [property, value] = safeStyle.split(/:(?!\/\/)/g);
+      let basePropertyName = camelCase(property);
+      const safePropertyName = isReservedKeyword(basePropertyName)
+        ? mangleNameAsAttribute(basePropertyName)
+        : basePropertyName;
+
+      let basePropertyValue = (value || "").replace(/\n/g, "").trim();
+
+      const safePropertyValue = escapeQuotes(basePropertyValue);
+
+      return "~" + safePropertyName + '="' + safePropertyValue + '"';
+    })
+    .filter(Boolean);
+
+  const labels = styles.length > 0 ? styles.join(", ") + ", " : "";
+
+  return "ReactDOM.Style.make(" + labels + " ())";
 }
 
 export { run };
