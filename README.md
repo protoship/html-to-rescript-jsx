@@ -4,6 +4,8 @@ Convert plain HTML with inline styles into valid ReScript React JSX component.
 
 Use online: [https://html-to-rescript-jsx.protoship.io/](https://html-to-rescript-jsx.protoship.io/)
 
+Test cases for currently covered features: [https://html-to-rescript-jsx.protoship.io/test.html](https://html-to-rescript-jsx.protoship.io/test.html)
+
 ## Development
 
 1. Start ReScript compiler to compile `src/**/*.res` to `.bs.js`.
