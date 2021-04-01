@@ -57,3 +57,16 @@ p#outputReScript {
   margin-top: 20px;
   color: darkgrey;
 }
+
+/* Tests page */
+.single-test-result {
+  padding: 8px;
+  margin-bottom: 16px;
+}
+.test-pass {
+  background-color: rgb(208, 226, 208);
+}
+
+.test-fail {
+  background-color: rgb(236, 140, 148);
+}

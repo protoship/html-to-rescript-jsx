@@ -1,5 +1,15 @@
-@module("./converter") external convert: unit => unit = "run"
+@module("./converter") external convert: string => string = "convertWithIntroOutro"
 @module("./clipboard") external copyOutputToClipboard: unit => unit = "copyOutputToClipboard"
+
+@val external document: {..} = "document"
+
+let convert = () => {
+  let inputDom = document["getElementById"]("inputHtml")
+  let inputText = inputDom["value"]
+  let convertedText = convert(inputText)
+
+  document["getElementById"]("outputReScript")["innerText"] = convertedText
+}
 
 module App = {
   @react.component

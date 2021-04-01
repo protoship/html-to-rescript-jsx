@@ -1,8 +1,6 @@
 import { parse } from 'node-html-parser';
 import { htmlCasedAttrs } from './htmlCasedAttrs';
-import { AllHtmlEntities as Entities } from "html-entities"
-import { isReservedKeyword, mangleNameAsAttribute } from "./ReasonHelper.bs"
-
+import { convertInlineCSS } from './convertInlineCSS';
 let intro = `
 let s = React.string
 
@@ -23,30 +21,30 @@ function spacing() {
   return "  ".repeat(indent)
 }
 
-function isVoidElement(el){
-  return [ 'area',
-  'base',
-  'basefont',
-  'bgsound',
-  'br',
-  'col',
-  'command',
-  'embed',
-  'frame',
-  'hr',
-  'image',
-  'img',
-  'input',
-  'isindex',
-  'keygen',
-  'link',
-  'menuitem',
-  'meta',
-  'nextid',
-  'param',
-  'source',
-  'track',
-  'wbr' ].includes(el)
+function isVoidElement(el) {
+  return ['area',
+    'base',
+    'basefont',
+    'bgsound',
+    'br',
+    'col',
+    'command',
+    'embed',
+    'frame',
+    'hr',
+    'image',
+    'img',
+    'input',
+    'isindex',
+    'keygen',
+    'link',
+    'menuitem',
+    'meta',
+    'nextid',
+    'param',
+    'source',
+    'track',
+    'wbr'].includes(el)
 }
 
 /* Convert aria-hidden to ariaHidden. From Facebook's html to jsx module. */
@@ -59,7 +57,7 @@ function hyphenToCamelCase(string) {
 /* Some HTML attributes are typed to be boolean in ReScript. They have to be
 rendered as values: {true} or {false}, rather than as strings. */
 function isBooleanAttr(key) {
-  return ["ariaExpanded", "ariaHidden"].includes(key)
+  return ["ariaExpanded", "ariaHidden", "contentEditable"].includes(key)
 }
 
 function toBooleanValue(v) {
@@ -110,7 +108,7 @@ let htmlElementToReScriptJsx = (node) => {
     if (isBooleanAttr(key)) {
       value = toBooleanValue(value)
     } else if (key == 'style') {
-      value = replaceStyle(value)
+      value = convertInlineCSS(value)
     } else if (isUnsupportedInRescript(key)) {
       value = null
       key = null
@@ -122,12 +120,14 @@ let htmlElementToReScriptJsx = (node) => {
   }
 
   attrsString = attrsString.join(" ")
+  if (attrsString.length > 0)
+    attrsString = ` ${attrsString}`
 
   let s = spacing()
-  if(isVoidElement(tag)){
-    result.push(`${s}<${tag} ${attrsString} />`)
-  }else{
-    result.push(`${s}<${tag} ${attrsString}>`)
+  if (isVoidElement(tag)) {
+    result.push(`${s}<${tag}${attrsString} />`)
+  } else {
+    result.push(`${s}<${tag}${attrsString}>`)
     indent += 1
     node.childNodes.forEach(node => toRescriptJsx(node))
     indent -= 1
@@ -153,13 +153,23 @@ let toRescriptJsx = node => {
   }
 }
 
-let run = (t) => {
-  if (!t)
-    t = document.getElementById("inputHtml").value;
+let convertWithIntroOutro = t => {
+  result = [intro]
+  indent = 2
+  convertSnippet(t)
+  result.push(outro)
+  return result.join("\n")
+}
 
+/* This is only used for testing in browserTest.res */
+let convertPlain = t => {
   result = []
   indent = 1
+  convertSnippet(t, 1)
+  return result
+}
 
+let convertSnippet = (t, i) => {
   const root = parse(t,
     {
       lowerCaseTagName: true,
@@ -172,76 +182,7 @@ let run = (t) => {
       }
     }
   );
-
-  result.push(intro)
-  indent += 1
   root.childNodes.forEach(node => toRescriptJsx(node))
-  indent -= 1
-  result.push(outro)
-
-  result = result.join("\n")
-
-  document.getElementById("outputReScript").innerText = result
 }
 
-
-const DASH = /[-|_|:]([a-z])/g;
-const MS = /^Ms/g;
-
-function capitalize(match) {
-  return match[1].toUpperCase();
-}
-
-function camelCase(property) {
-  const mid = property.replace(DASH, capitalize).replace(MS, "ms");
-  const final = lowerCaseFirst(mid);
-
-  return final;
-}
-
-function lowerCaseFirst(s) {
-  return s.charAt(0).toLowerCase() + s.slice(1);
-}
-
-const escapeQuotes = (string) => {
-  if (typeof string === "string") {
-    return string.replace(/"/g, '\\"');
-  }
-
-  return string;
-};
-
-function replaceStyle(styleString) {
-  const entities = new Entities();
-  const styles = entities
-    .decode(styleString)
-    .trim()
-    .split(";")
-    .map((style) => {
-      if (style.trim() == "") {
-        return "";
-      }
-      const safeStyle = style
-        .split(/\n/)
-        .map((piece) => piece.trim())
-        .join("");
-      const [property, value] = safeStyle.split(/:(?!\/\/)/g);
-      let basePropertyName = camelCase(property);
-      const safePropertyName = isReservedKeyword(basePropertyName)
-        ? mangleNameAsAttribute(basePropertyName)
-        : basePropertyName;
-
-      let basePropertyValue = (value || "").replace(/\n/g, "").trim();
-
-      const safePropertyValue = escapeQuotes(basePropertyValue);
-
-      return "~" + safePropertyName + '="' + safePropertyValue + '"';
-    })
-    .filter(Boolean);
-
-  const labels = styles.length > 0 ? styles.join(", ") + ", " : "";
-
-  return "ReactDOM.Style.make(" + labels + " ())";
-}
-
-export { run };
+export { convertWithIntroOutro, convertPlain }
