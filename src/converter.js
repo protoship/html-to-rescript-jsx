@@ -1,17 +1,13 @@
 import { parse } from 'node-html-parser';
 import { htmlCasedAttrs } from './htmlCasedAttrs';
 import { convertInlineCSS } from './convertInlineCSS';
-let intro = `
-let s = React.string
+let intro = `let s = React.string
 
 @react.component
 let make = () => {
-  <>
-`
-let outro = `
-  </>
-}
-`
+  <>`
+let outro = `  </>
+}`
 
 /* Global array where we accumulate all the converted lines */
 var result;

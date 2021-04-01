@@ -30,6 +30,7 @@
   "dependencies": {
     "@rescript/react": "^0.10.1",
     "css": "2.2.4",
+    "lodash.debounce": "4.0.8",
     "node-html-parser": "3.0.4",
     "path-browserify": "1.0.1",
     "react": "^17.0.1",

@@ -2,6 +2,9 @@
 import "./index.css"
 `)
 
+type debouncedFn = unit => unit
+@module external debounce: ('a => unit, int) => debouncedFn = "lodash.debounce"
+
 @module("./converter") external convert: string => string = "convertWithIntroOutro"
 @module("./clipboard") external copyOutputToClipboard: unit => unit = "copyOutputToClipboard"
 
@@ -14,6 +17,8 @@ let convert = () => {
 
   document["getElementById"]("outputReScript")["innerText"] = convertedText
 }
+
+let updateConversionResult = debounce(convert, 150)
 
 let s = React.string
 
@@ -36,26 +41,23 @@ module App = {
       None
     })
 
-    let editorStyle = ReactDOM.Style.make(~height="calc(100vh - 300px)", ())
+    let editorStyle = ReactDOM.Style.make(~height="calc(100vh - 250px)", ())
 
     <RootUI>
       <div>
         <div className="mt-4 grid grid-cols-2">
-          <div className="w-full ">
-            <div className="flex justify-between">
-              <p className="block mb-2 text-gray-600 text-sm" onClick={_ => convert()}>
-                {s("Paste your HTML below")}
-              </p>
-            </div>
+          <div className="mr-4">
+            <p className="block mb-2 text-gray-600 text-sm"> {s("Paste your HTML below")} </p>
             <textarea
               style={editorStyle}
-              className="block w-10/12 bg-white p-4 font-mono text-xs border border-blue-200 overflow-scroll"
-              onFocus={event => ReactEvent.Synthetic.currentTarget(event)["select"]()}
+              className="block w-full bg-white p-4 font-mono text-xs border border-blue-200 overflow-scroll"
+              onFocus={evt => (evt->ReactEvent.Synthetic.currentTarget)["select"]()}
               id="inputHtml"
+              onChange={_ => updateConversionResult()}
               defaultValue={SampleData.initialData}
             />
           </div>
-          <div className="text-white bg-gray-900 ">
+          <div className="text-white bg-gray-900">
             <button
               className="flex items-center justify-center w-full text-gray-100 bg-blue-800 text-lg p-4 hover:bg-gray-600 hover:text-blue-50"
               onClick={_ => copyOutputToClipboard()}>
