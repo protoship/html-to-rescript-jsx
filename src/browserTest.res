@@ -1,3 +1,6 @@
+%%raw(`
+import "./index.css"
+`)
 @module("./converter") external convertPlain: string => array<string> = "convertPlain"
 let s = React.string
 let testCases = [
@@ -70,8 +73,23 @@ let testCases = [
   ],
 ]
 
+type results = {
+  mutable total: int,
+  mutable passed: int,
+  mutable failed: int,
+  mutable cases: array<React.element>,
+}
+
 let testResults = () => {
-  testCases->Js.Array2.mapi((case, index) => {
+  let results = {
+    total: 0,
+    passed: 0,
+    failed: 0,
+    cases: [],
+  }
+  let cases = testCases->Js.Array2.mapi((case, index) => {
+    results.total = results.total + 1
+
     let caseName = case[0]
     let inputText = case[1]
     let expectedOutput = case[2]
@@ -83,30 +101,60 @@ let testResults = () => {
     let outputText = outputText->Js.Array2.map(Js.String2.trim)->Js.Array2.joinWith("")
 
     let isTestPassing = expectedOutput == outputText
+    if isTestPassing {
+      results.passed = results.passed + 1
+    } else {
+      results.failed = results.failed + 1
+    }
 
-    let className = isTestPassing ? "test-pass" : "test-fail"
-    <div className={"single-test-result " ++ className}>
-      <p> {s("# " ++ (index + 1)->string_of_int ++ ". ")} </p>
-      <strong> {s(caseName)} </strong>
-      <pre> {s(inputText)} </pre>
-      <pre> {s(expectedOutput)} </pre>
-      {isTestPassing ? React.null : <pre> {s(outputText)} </pre>}
+    let className = isTestPassing ? "bg-green-200" : "bg-red-300"
+    <div className={"mb-4 border p-4 overflow-auto " ++ className}>
+      <p className="mb-2">
+        {s("# " ++ (index + 1)->string_of_int ++ ". ")} <strong> {s(caseName)} </strong>
+      </p>
+      <div className="grid grid-cols-12">
+        <p className="col-span-1 text-sm text-gray-600"> {s("input")} </p>
+        <pre className="col-span-11"> {s(inputText)} </pre>
+        <p className="col-span-1 text-sm text-gray-600"> {s("expected output")} </p>
+        <pre className="col-span-11"> {s(expectedOutput)} </pre>
+        {isTestPassing
+          ? React.null
+          : <>
+              <p className="col-span-1 text-sm text-gray-600"> {s("output")} </p>
+              <pre className="col-span-11"> {s(outputText)} </pre>
+            </>}
+      </div>
     </div>
   })
+
+  results.cases = cases
+  results
 }
 
 module App = {
   @react.component
   let make = () => {
-    let (results, setResult) = React.useState(() => [])
+    let (results, setResult) = React.useState(() => testResults())
     let runTests = () => setResult(_ => testResults())
     React.useEffect0(() => {
       runTests()
       None
     })
-    <div>
-      {results->React.array} <button onClick={_e => runTests()}> {s("Run tests again")} </button>
-    </div>
+    <RootUI>
+      <h2 className="text-2xl mb-4"> {s("Test cases")} </h2>
+      <h3
+        className={"text-lg mb-6 p-4 inline-block " ++ (
+          results.failed > 0 ? "bg-red-300" : "bg-green-300 text-gray-600"
+        )}>
+        {s(
+          `${results.total->string_of_int} total. ${results.passed->string_of_int} passed. ${results.failed->string_of_int} failed.`,
+        )}
+      </h3>
+      <button className="block mb-6 p-2 bg-gray-300" onClick={_e => runTests()}>
+        {s("Run tests again")}
+      </button>
+      {results.cases->React.array}
+    </RootUI>
   }
 }
 

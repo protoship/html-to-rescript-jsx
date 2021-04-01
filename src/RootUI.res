@@ -2,7 +2,7 @@ let s = React.string
 
 @react.component
 let make = (~children) => {
-  <main className="bg-gray-50 p-8 antialiased h-screen w-screen overflow-hidden">
+  <main className="bg-gray-50 p-8 antialiased h-screen w-screen">
     <div className="flex items-end justify-between w-full mb-6">
       <h1 className="text-2xl"> {s("Convert HTML to ReScript JSX React Component")} </h1>
       <p className="mr-4">
@@ -18,7 +18,7 @@ let make = (~children) => {
           "Please check the test cases and raise a GitHub issue if your input is not handled well.",
         )}
       </p>
-      <p className="mt-2">
+      <p className="mt-2 pb-4">
         <a className="text-blue-900" href="/"> {s("home")} </a>
         {s(" | ")}
         <a className="text-blue-900" href="/test.html"> {s("test cases")} </a>

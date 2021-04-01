@@ -5,6 +5,10 @@ import * as React from "react";
 import * as ReactDom from "react-dom";
 import * as Caml_array from "bs-platform/lib/es6/caml_array.js";
 import * as Converter from "./converter";
+import * as RootUI$ReactResTest from "./RootUI.bs.js";
+
+import "./index.css"
+;
 
 function convertPlain(prim) {
   return Converter.convertPlain(prim);
@@ -83,40 +87,80 @@ var testCases = [
 ];
 
 function testResults(param) {
-  return testCases.map(function ($$case, index) {
-              var caseName = Caml_array.get($$case, 0);
-              var inputText = Caml_array.get($$case, 1);
-              var expectedOutput = Caml_array.get($$case, 2);
-              var outputText = Converter.convertPlain(inputText);
-              var outputText$1 = outputText.map(function (prim) {
-                      return prim.trim();
-                    }).join("");
-              var isTestPassing = expectedOutput === outputText$1;
-              var className = isTestPassing ? "test-pass" : "test-fail";
-              return React.createElement("div", {
-                          className: "single-test-result " + className
-                        }, React.createElement("p", undefined, "# " + String(index + 1 | 0) + ". "), React.createElement("strong", undefined, caseName), React.createElement("pre", undefined, inputText), React.createElement("pre", undefined, expectedOutput), isTestPassing ? null : React.createElement("pre", undefined, outputText$1));
-            });
+  var results = {
+    total: 0,
+    passed: 0,
+    failed: 0,
+    cases: []
+  };
+  var cases = testCases.map(function ($$case, index) {
+        results.total = results.total + 1 | 0;
+        var caseName = Caml_array.get($$case, 0);
+        var inputText = Caml_array.get($$case, 1);
+        var expectedOutput = Caml_array.get($$case, 2);
+        var outputText = Converter.convertPlain(inputText);
+        var outputText$1 = outputText.map(function (prim) {
+                return prim.trim();
+              }).join("");
+        var isTestPassing = expectedOutput === outputText$1;
+        if (isTestPassing) {
+          results.passed = results.passed + 1 | 0;
+        } else {
+          results.failed = results.failed + 1 | 0;
+        }
+        var className = isTestPassing ? "bg-green-200" : "bg-red-300";
+        return React.createElement("div", {
+                    className: "mb-4 border p-4 overflow-auto " + className
+                  }, React.createElement("p", {
+                        className: "mb-2"
+                      }, "# " + String(index + 1 | 0) + ". ", React.createElement("strong", undefined, caseName)), React.createElement("div", {
+                        className: "grid grid-cols-12"
+                      }, React.createElement("p", {
+                            className: "col-span-1 text-sm text-gray-600"
+                          }, "input"), React.createElement("pre", {
+                            className: "col-span-11"
+                          }, inputText), React.createElement("p", {
+                            className: "col-span-1 text-sm text-gray-600"
+                          }, "expected output"), React.createElement("pre", {
+                            className: "col-span-11"
+                          }, expectedOutput), isTestPassing ? null : React.createElement(React.Fragment, undefined, React.createElement("p", {
+                                  className: "col-span-1 text-sm text-gray-600"
+                                }, "output"), React.createElement("pre", {
+                                  className: "col-span-11"
+                                }, outputText$1))));
+      });
+  results.cases = cases;
+  return results;
 }
 
 function BrowserTest$App(Props) {
   var match = React.useState(function () {
-        return [];
+        return testResults(undefined);
       });
   var setResult = match[1];
+  var results = match[0];
   React.useEffect((function () {
           Curry._1(setResult, (function (param) {
                   return testResults(undefined);
                 }));
           
         }), []);
-  return React.createElement("div", undefined, match[0], React.createElement("button", {
+  return React.createElement(RootUI$ReactResTest.make, {
+              children: null
+            }, React.createElement("h2", {
+                  className: "text-2xl mb-4"
+                }, "Test cases"), React.createElement("h3", {
+                  className: "text-lg mb-6 p-4 inline-block " + (
+                    results.failed > 0 ? "bg-red-300" : "bg-green-300 text-gray-600"
+                  )
+                }, String(results.total) + " total. " + String(results.passed) + " passed. " + String(results.failed) + " failed."), React.createElement("button", {
+                  className: "block mb-6 p-2 bg-gray-300",
                   onClick: (function (_e) {
                       return Curry._1(setResult, (function (param) {
                                     return testResults(undefined);
                                   }));
                     })
-                }, "Run tests again"));
+                }, "Run tests again"), results.cases);
 }
 
 var App = {
@@ -139,4 +183,4 @@ export {
   App ,
   
 }
-/* root Not a pure module */
+/*  Not a pure module */

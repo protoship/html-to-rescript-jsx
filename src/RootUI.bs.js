@@ -9,7 +9,7 @@ function s(prim) {
 function RootUI(Props) {
   var children = Props.children;
   return React.createElement("main", {
-              className: "bg-gray-50 p-8 antialiased h-screen w-screen overflow-hidden"
+              className: "bg-gray-50 p-8 antialiased h-screen w-screen"
             }, React.createElement("div", {
                   className: "flex items-end justify-between w-full mb-6"
                 }, React.createElement("h1", {
@@ -24,7 +24,7 @@ function RootUI(Props) {
                 }, React.createElement("p", {
                       className: "mt-4 text-gray-500 text-sm"
                     }, "Please check the test cases and raise a GitHub issue if your input is not handled well."), React.createElement("p", {
-                      className: "mt-2"
+                      className: "mt-2 pb-4"
                     }, React.createElement("a", {
                           className: "text-blue-900",
                           href: "/"
