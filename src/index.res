@@ -1,7 +1,12 @@
 @module("./converter") external convert: string => string = "convertWithIntroOutro"
 @module("./clipboard") external copyOutputToClipboard: unit => unit = "copyOutputToClipboard"
+@module("lz-string")
+external compressToEncodedURIComponent: string => string = "compressToEncodedURIComponent"
 
 @val external document: {..} = "document"
+
+@scope("window") @val
+external windowOpen: string => unit = "open"
 
 let convert = () => {
   let inputDom = document["getElementById"]("inputHtml")
@@ -33,9 +38,24 @@ module App = {
         </div>
         <div>
           <p id="outputReScript" />
-          <button className="copyToClipboard" onClick={_ => copyOutputToClipboard()}>
-            {React.string("2. Copy to clipboard")}
-          </button>
+          <div style={ReactDOM.Style.make(~display="flex", ~flexDirection="row", ())}>
+            <button className="copyToClipboard" onClick={_ => copyOutputToClipboard()}>
+              {React.string("2. Copy to clipboard")}
+            </button>
+            <div style={ReactDOM.Style.make(~width="5px", ())} />
+            <button
+              className="copyToClipboard"
+              onClick={_ => {
+                windowOpen(
+                  "https://rescript-lang.org/try?code=" ++
+                  compressToEncodedURIComponent(
+                    document["getElementById"]("outputReScript")["innerText"],
+                  ),
+                )
+              }}>
+              {React.string("Open in ReScript playground")}
+            </button>
+          </div>
         </div>
       </div>
     </div>

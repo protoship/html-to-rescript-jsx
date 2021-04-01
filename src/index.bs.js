@@ -2,6 +2,7 @@
 'use strict';
 
 var React = require("react");
+var LzString = require("lz-string");
 var ReactDom = require("react-dom");
 var Clipboard = require("./clipboard");
 var Converter = require("./converter");
@@ -41,13 +42,28 @@ function Index$App(Props) {
                             })
                         }, "1. Convert HTML to ReScript JSX component")), React.createElement("div", undefined, React.createElement("p", {
                           id: "outputReScript"
-                        }), React.createElement("button", {
-                          className: "copyToClipboard",
-                          onClick: (function (param) {
-                              Clipboard.copyOutputToClipboard();
-                              
-                            })
-                        }, "2. Copy to clipboard"))));
+                        }), React.createElement("div", {
+                          style: {
+                            display: "flex",
+                            flexDirection: "row"
+                          }
+                        }, React.createElement("button", {
+                              className: "copyToClipboard",
+                              onClick: (function (param) {
+                                  Clipboard.copyOutputToClipboard();
+                                  
+                                })
+                            }, "2. Copy to clipboard"), React.createElement("div", {
+                              style: {
+                                width: "5px"
+                              }
+                            }), React.createElement("button", {
+                              className: "copyToClipboard",
+                              onClick: (function (param) {
+                                  window.open("https://rescript-lang.org/try?code=" + LzString.compressToEncodedURIComponent(document.getElementById("outputReScript").innerText));
+                                  
+                                })
+                            }, "Open in ReScript playground")))));
 }
 
 var App = {
