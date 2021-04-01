@@ -24,8 +24,6 @@ turns to:
   [["color", "red"], ["background", "blue"], ["font-size", "44px"]]
  */
 
-const STAND_IN_SELECTOR = ".element"
-
 function toCssArray(obj) {
   if (obj.stylesheet.rules.length == 0) {
     return []
@@ -41,6 +39,7 @@ function toCssArray(obj) {
 }
 
 function parse(inlineText) {
+  const STAND_IN_SELECTOR = ".element"
   /* https://github.com/reworkcss/css needs a proper CSS fragment, not just
   inline styles. So `color: red;` becomes `.element { color: red; } */
   let text = `${STAND_IN_SELECTOR} { ${inlineText} }`
@@ -99,7 +98,7 @@ function convertInlineCSS(inlineText) {
     return "~" + name + '="' + value + '"';
   })
 
-  return "ReactDOM.Style.make(" + keyValues.join(", ") + ", ())";
+  return "{ReactDOM.Style.make(" + keyValues.join(", ") + ", ())";
 
 }
 export { convertInlineCSS }
