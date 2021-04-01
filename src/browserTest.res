@@ -14,6 +14,11 @@ let testCases = [
     `<div style='background:url(data:image/png;base64,iVBORw0KGgoAAAA) repeat-x center;'>Hello</div>`,
     `<div style={ReactDOM.Style.make(~background="url(data:image/png;base64,iVBORw0KGgoAAAA) repeat-x center", ())}>{s("Hello")}</div>`,
   ],
+  [
+    "Invalid inline CSS should be ignored and rest should be parsed",
+    `<p style='xyz--123;;::'>Hello</p>`,
+    `<p>{s("Hello")}</p>`,
+  ],
   ["P tag with text", `<p>Hello World!</p>`, `<p>{s("Hello World!")}</p>`],
   [
     "Nested HTML",

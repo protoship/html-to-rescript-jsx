@@ -86,6 +86,9 @@ function convertInlineCSS(inlineText) {
     css = []
   }
 
+  if (css.length == 0)
+    return null
+
   let keyValues = css.map(entry => {
     let name = entry[0]
     name = camelCase(name);
