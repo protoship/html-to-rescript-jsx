@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "bsb -clean-world -make-world -w",
-    "dev": "SET NODE_ENV=development && webpack serve -c index.webpack.js",
+    "dev": "NODE_ENV=development webpack serve -c index.webpack.js",
     "test": "NODE_ENV=development webpack serve -c browserTest.webpack.js",
     "build": "bsb -clean-world -make-world && NODE_ENV=production webpack -c index.webpack.js --env production && NODE_ENV=production webpack -c browserTest.webpack.js --env production"
   },
