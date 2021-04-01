@@ -10,11 +10,11 @@ function copyElementToClipboard(id) {
 
 export function copyOutputToClipboard() {
   copyElementToClipboard("outputReScript")
-  let msg = document.body.firstElementChild.insertAdjacentHTML(
+  let msg = document.getElementById("btn-copyToClipboard").insertAdjacentHTML(
     "beforeend",
-    "<p class='clipboard-msg'>Copied to clipboard...</p>"
+    "<p class='msg-copiedToClipboard ml-auto text-sm text-yellow-300'>Copied to clipboard...</p>"
   )
   setTimeout(() => {
-    document.getElementsByClassName("clipboard-msg").item(0).remove()
+    document.getElementsByClassName("msg-copiedToClipboard").item(0).remove()
   }, 500)
 }

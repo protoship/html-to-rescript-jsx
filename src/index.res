@@ -59,7 +59,8 @@ module App = {
           </div>
           <div className="text-white bg-gray-900">
             <button
-              className="flex items-center justify-center w-full text-gray-100 bg-blue-800 text-lg p-4 hover:bg-gray-600 hover:text-blue-50"
+              id="btn-copyToClipboard"
+              className="flex items-center w-full text-gray-100 bg-blue-800 text-lg p-4 hover:bg-blue-900 hover:text-white"
               onClick={_ => copyOutputToClipboard()}>
               <div className="w-8 h-8 mr-4"> {clipboardIcon} </div>
               <p> {s("Click here to copy the converted code to clipboard")} </p>

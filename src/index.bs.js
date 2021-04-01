@@ -73,7 +73,8 @@ function Index$App(Props) {
                               })), React.createElement("div", {
                             className: "text-white bg-gray-900"
                           }, React.createElement("button", {
-                                className: "flex items-center justify-center w-full text-gray-100 bg-blue-800 text-lg p-4 hover:bg-gray-600 hover:text-blue-50",
+                                className: "flex items-center w-full text-gray-100 bg-blue-800 text-lg p-4 hover:bg-blue-900 hover:text-white",
+                                id: "btn-copyToClipboard",
                                 onClick: (function (param) {
                                     Clipboard.copyOutputToClipboard();
                                     
