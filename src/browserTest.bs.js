@@ -22,12 +22,12 @@ var testCases = [
   [
     "Simple inline CSS style",
     "<p style=\"background-color: red; font-size: 20px; font-family: 'Times New Roman, Georgia, sans-serif'\">Hello</p>",
-    "<p style=ReactDOM.Style.make(~backgroundColor=\"red\", ~fontSize=\"20px\", ~fontFamily=\"'Times New Roman, Georgia, sans-serif'\", ())>{s(\"Hello\")}</p>"
+    "<p style={ReactDOM.Style.make(~backgroundColor=\"red\", ~fontSize=\"20px\", ~fontFamily=\"'Times New Roman, Georgia, sans-serif'\", ())}>{s(\"Hello\")}</p>"
   ],
   [
     "Inline CSS with base64 background image data",
     "<div style='background:url(data:image/png;base64,iVBORw0KGgoAAAA) repeat-x center;'>Hello</div>",
-    "<div style=ReactDOM.Style.make(~background=\"url(data:image/png;base64,iVBORw0KGgoAAAA) repeat-x center\", ())>{s(\"Hello\")}</div>"
+    "<div style={ReactDOM.Style.make(~background=\"url(data:image/png;base64,iVBORw0KGgoAAAA) repeat-x center\", ())}>{s(\"Hello\")}</div>"
   ],
   [
     "P tag with text",

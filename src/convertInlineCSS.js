@@ -98,7 +98,7 @@ function convertInlineCSS(inlineText) {
     return "~" + name + '="' + value + '"';
   })
 
-  return "{ReactDOM.Style.make(" + keyValues.join(", ") + ", ())";
+  return "{ReactDOM.Style.make(" + keyValues.join(", ") + ", ())}";
 
 }
 export { convertInlineCSS }
