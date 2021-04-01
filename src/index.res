@@ -1,3 +1,7 @@
+%%raw(`
+import "./index.css"
+`)
+
 @module("./converter") external convert: string => string = "convertWithIntroOutro"
 @module("./clipboard") external copyOutputToClipboard: unit => unit = "copyOutputToClipboard"
 

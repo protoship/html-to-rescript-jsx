@@ -7,6 +7,9 @@ var Clipboard = require("./clipboard");
 var Converter = require("./converter");
 var SampleData$ReactResTest = require("./SampleData.bs.js");
 
+import "./index.css"
+;
+
 function copyOutputToClipboard(prim) {
   Clipboard.copyOutputToClipboard();
   
@@ -65,4 +68,4 @@ if (root == null) {
 exports.copyOutputToClipboard = copyOutputToClipboard;
 exports.convert = convert;
 exports.App = App;
-/* root Not a pure module */
+/*  Not a pure module */
