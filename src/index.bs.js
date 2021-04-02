@@ -8,7 +8,7 @@ import * as Clipboard from "./clipboard";
 import * as Converter from "./converter";
 import * as LodashDebounce from "lodash.debounce";
 import * as RootUI$ReactResTest from "./RootUI.bs.js";
-import * as SampleData$ReactResTest from "./SampleData.bs.js";
+import * as SampleData$ReactResTest from "./sampleData.bs.js";
 
 import "./index.css"
 ;
