@@ -3,10 +3,14 @@ let s = React.string
 @react.component
 let make = (~children) => {
   <main className="bg-gray-50 p-8 antialiased h-screen w-screen">
-    <div className="flex items-end justify-between w-full mb-6">
-      <h1 className="text-2xl"> {s("Convert HTML to ReScript JSX React Component")} </h1>
+    <div className="block md:flex items-end justify-between w-full mb-6">
+      <h1 className="text-base mb-2 md:mb-0 md:text-2xl">
+        {s("Convert HTML to ReScript JSX React Component")}
+      </h1>
       <p className="mr-4">
-        <a className="text-blue-900" href="https://github.com/protoship/html-to-rescript-jsx">
+        <a
+          className="text-blue-900 text-sm md:text-base"
+          href="https://github.com/protoship/html-to-rescript-jsx">
           {s("https://github.com/protoship/html-to-rescript-jsx")}
         </a>
       </p>

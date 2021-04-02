@@ -58,7 +58,7 @@ module App = {
 
     <RootUI>
       <div>
-        <div className="mt-4 grid grid-cols-2">
+        <div className="mt-4 md:grid grid-cols-2">
           <div className="mr-4">
             <p className="block mb-2 text-gray-600 text-sm"> {s("Paste your HTML below")} </p>
             <textarea
@@ -71,16 +71,16 @@ module App = {
             />
           </div>
           <div className="text-white bg-gray-900">
-            <div className="grid grid-cols-2">
+            <div className="mt-2 md:mt-0 md:grid grid-cols-2">
               <button
                 id="btn-copyToClipboard"
-                className="col-span-1 flex items-center w-full text-gray-100 bg-blue-800 text-base p-2 hover:bg-indigo-900 hover:text-white"
+                className="col-span-1 flex items-center w-full text-gray-100 bg-blue-800 text-sm p-1 md:text-base md:p-2 hover:bg-indigo-900 hover:text-white"
                 onClick={_ => copyOutputToClipboard()}>
                 <div className="w-6 h-6 ml-2 mr-2"> {clipboardIcon} </div>
                 <p> {s("Copy to clipboard")} </p>
               </button>
               <button
-                className="col-span-1 flex items-center w-full text-gray-100 bg-indigo-800 text-base p-2 hover:bg-blue-900 hover:text-white"
+                className="col-span-1 flex items-center w-full text-gray-100 bg-indigo-800 text-sm p-1 md:text-base md:p-2 hover:bg-blue-900 hover:text-white"
                 onClick={_ => {
                   windowOpen(
                     "https://rescript-lang.org/try?code=" ++

@@ -11,13 +11,13 @@ function RootUI(Props) {
   return React.createElement("main", {
               className: "bg-gray-50 p-8 antialiased h-screen w-screen"
             }, React.createElement("div", {
-                  className: "flex items-end justify-between w-full mb-6"
+                  className: "block md:flex items-end justify-between w-full mb-6"
                 }, React.createElement("h1", {
-                      className: "text-2xl"
+                      className: "text-base mb-2 md:mb-0 md:text-2xl"
                     }, "Convert HTML to ReScript JSX React Component"), React.createElement("p", {
                       className: "mr-4"
                     }, React.createElement("a", {
-                          className: "text-blue-900",
+                          className: "text-blue-900 text-sm md:text-base",
                           href: "https://github.com/protoship/html-to-rescript-jsx"
                         }, "https://github.com/protoship/html-to-rescript-jsx"))), children, React.createElement("div", {
                   className: "border-t"

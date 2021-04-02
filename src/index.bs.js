@@ -65,7 +65,7 @@ function Index$App(Props) {
   };
   return React.createElement(RootUI$ReactResTest.make, {
               children: React.createElement("div", undefined, React.createElement("div", {
-                        className: "mt-4 grid grid-cols-2"
+                        className: "mt-4 md:grid grid-cols-2"
                       }, React.createElement("div", {
                             className: "mr-4"
                           }, React.createElement("p", {
@@ -84,9 +84,9 @@ function Index$App(Props) {
                               })), React.createElement("div", {
                             className: "text-white bg-gray-900"
                           }, React.createElement("div", {
-                                className: "grid grid-cols-2"
+                                className: "mt-2 md:mt-0 md:grid grid-cols-2"
                               }, React.createElement("button", {
-                                    className: "col-span-1 flex items-center w-full text-gray-100 bg-blue-800 text-base p-2 hover:bg-indigo-900 hover:text-white",
+                                    className: "col-span-1 flex items-center w-full text-gray-100 bg-blue-800 text-sm p-1 md:text-base md:p-2 hover:bg-indigo-900 hover:text-white",
                                     id: "btn-copyToClipboard",
                                     onClick: (function (param) {
                                         Clipboard.copyOutputToClipboard();
@@ -95,7 +95,7 @@ function Index$App(Props) {
                                   }, React.createElement("div", {
                                         className: "w-6 h-6 ml-2 mr-2"
                                       }, clipboardIcon), React.createElement("p", undefined, "Copy to clipboard")), React.createElement("button", {
-                                    className: "col-span-1 flex items-center w-full text-gray-100 bg-indigo-800 text-base p-2 hover:bg-blue-900 hover:text-white",
+                                    className: "col-span-1 flex items-center w-full text-gray-100 bg-indigo-800 text-sm p-1 md:text-base md:p-2 hover:bg-blue-900 hover:text-white",
                                     onClick: (function (param) {
                                         window.open("https://rescript-lang.org/try?code=" + LzString.compressToEncodedURIComponent(document.getElementById("outputReScript").innerText));
                                         
