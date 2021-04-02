@@ -15,6 +15,11 @@ let testCases = [
     `<div style={ReactDOM.Style.make(~background="url(data:image/png;base64,iVBORw0KGgoAAAA) repeat-x center", ())}>{s("Hello")}</div>`,
   ],
   [
+    "CSS reserved property names",
+    `<div style='and: 10px; type: layout'></div>`,
+    `<div style={ReactDOM.Style.make(~and_="10px", ~type_="layout", ())}></div>`,
+  ],
+  [
     "Invalid inline CSS should be ignored and rest should be parsed",
     `<p style='xyz--123;;::'>Hello</p>`,
     `<p>{s("Hello")}</p>`,

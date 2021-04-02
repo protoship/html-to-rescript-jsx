@@ -5,7 +5,7 @@ a simpler regex parser.
 */
 
 import * as css from 'css';
-import { isReservedKeyword, mangleNameAsAttribute } from "./ReasonHelper.bs"
+import { isReservedKeyword } from "./htmlMappingHelpers"
 
 /*
 Convert parsed css object into a flat array
@@ -91,9 +91,9 @@ function convertInlineCSS(inlineText) {
 
   let keyValues = css.map(entry => {
     let name = entry[0]
-    name = camelCase(name);
+    name = camelCase(name)
     if (isReservedKeyword(name))
-      name = mangleNameAsAttribute(name)
+      name = `${name}_`
 
     let value = entry[1]
     value = escapeQuotes(value);

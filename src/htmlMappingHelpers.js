@@ -26,4 +26,12 @@ function isVoidElement(el) {
   ].includes(el);
 }
 
-export { isVoidElement, htmlToDomAttrName };
+/* Verbatim from https://github.com/mrmurphy/html-to-reason/blob/master/src/ReasonHelpers.re */
+// prettier-ignore
+const reservedKeywords = new Set(["and", "as", "assert", "begin", "class", "constraint", "do", "done", "downto", "else", "end", "esfun", "exception", "external", "false", "for", "fun", "function", "functor", "if", "in", "include", "inherit", "initializer", "lazy", "let", "module", "mutable", "new", "nonrec", "object", "of", "open", "or", "pri", "pub", "rec", "sig", "struct", "switch", "then", "to", "true", "try", "type", "val", "virtual", "when", "while", "with",])
+
+let isReservedKeyword = string => {
+  return reservedKeywords.has(string.toLowerCase())
+}
+
+export { isVoidElement, htmlToDomAttrName, isReservedKeyword };
