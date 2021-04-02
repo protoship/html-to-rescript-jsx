@@ -67,7 +67,7 @@ module App = {
               onFocus={evt => (evt->ReactEvent.Synthetic.currentTarget)["select"]()}
               id="inputHtml"
               onChange={_ => updateConversionResult()}
-              defaultValue={SampleData.initialData}
+              defaultValue={SampleTemplate.template}
             />
           </div>
           <div className="text-white bg-gray-900">

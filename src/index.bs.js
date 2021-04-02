@@ -8,7 +8,7 @@ import * as Clipboard from "./clipboard";
 import * as Converter from "./converter";
 import * as LodashDebounce from "lodash.debounce";
 import * as RootUI$ReactResTest from "./RootUI.bs.js";
-import * as SampleData$ReactResTest from "./sampleData.bs.js";
+import * as SampleTemplate$ReactResTest from "./sampleTemplate.bs.js";
 
 import "./index.css"
 ;
@@ -71,7 +71,7 @@ function Index$App(Props) {
                           }, React.createElement("p", {
                                 className: "block mb-2 text-gray-600 text-sm"
                               }, "Paste your HTML below"), React.createElement("textarea", {
-                                defaultValue: SampleData$ReactResTest.initialData,
+                                defaultValue: SampleTemplate$ReactResTest.template,
                                 className: "block w-full bg-white p-4 font-mono text-xs border border-blue-200 overflow-scroll",
                                 id: "inputHtml",
                                 style: editorStyle,

@@ -1,5 +1,4 @@
-let initialData = `
-<!-- Welcome! -->
+let template = `<!-- Welcome! -->
 
 <main>
   <img class="h-8 w-8" src="logo.svg" alt="Logo">
