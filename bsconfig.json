@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/rescript-lang/rescript-compiler/master/docs/docson/build-schema.json",
-  "name": "react-res-test",
+  "name": "html-to-rescript-jsx",
   "sources": [
     {
       "dir": "src",

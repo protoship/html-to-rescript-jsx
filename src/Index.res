@@ -5,7 +5,7 @@ import "./index.css"
 type debouncedFn = unit => unit
 @module external debounce: ('a => unit, int) => debouncedFn = "lodash.debounce"
 
-@module("./converter") external convert: string => string = "convertWithIntroOutro"
+@module("./converter") external convertWithIntroOutro: string => string = "convertWithIntroOutro"
 @module("./clipboard") external copyOutputToClipboard: unit => unit = "copyOutputToClipboard"
 @module("lz-string")
 external compressToEncodedURIComponent: string => string = "compressToEncodedURIComponent"
@@ -16,11 +16,10 @@ external compressToEncodedURIComponent: string => string = "compressToEncodedURI
 external windowOpen: string => unit = "open"
 
 let convert = () => {
-  let inputDom = document["getElementById"]("inputHtml")
+  let inputDom = document["getElementById"](. "inputHtml")
   let inputText = inputDom["value"]
-  let convertedText = convert(inputText)
-
-  document["getElementById"]("outputReScript")["innerText"] = convertedText
+  let convertedText = convertWithIntroOutro(inputText)
+  document["getElementById"](. "outputReScript")["innerText"] = convertedText
 }
 
 let updateConversionResult = debounce(convert, 150)
@@ -64,7 +63,7 @@ module App = {
             <textarea
               style={editorStyle}
               className="block w-full bg-white p-4 font-mono text-xs border border-blue-200 overflow-scroll"
-              onFocus={evt => (evt->ReactEvent.Synthetic.currentTarget)["select"]()}
+              onFocus={evt => ReactEvent.Synthetic.currentTarget(evt)["select"](.)}
               id="inputHtml"
               onChange={_ => updateConversionResult()}
               defaultValue={SampleTemplate.template}
@@ -85,7 +84,7 @@ module App = {
                   windowOpen(
                     "https://rescript-lang.org/try?code=" ++
                     compressToEncodedURIComponent(
-                      document["getElementById"]("outputReScript")["innerText"],
+                      document["getElementById"](. "outputReScript")["innerText"],
                     ),
                   )
                 }}>
