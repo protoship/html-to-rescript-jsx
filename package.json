@@ -4,27 +4,27 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "bsb -clean-world -make-world -w",
-    "dev": "NODE_ENV=development webpack serve -c index.webpack.js",
+    "start": "rescript clean && rescript build -with-deps -w",
+    "dev": "NODE_ENV=development webpack serve -c index.webpack.js --env development",
     "test": "NODE_ENV=development webpack serve -c browserTest.webpack.js",
-    "build": "bsb -clean-world -make-world && NODE_ENV=production webpack -c index.webpack.js --env production && NODE_ENV=production webpack -c browserTest.webpack.js --env production"
+    "build": "rescript clean && rescript build -with-deps && NODE_ENV=production webpack -c index.webpack.js --env production && NODE_ENV=production webpack -c browserTest.webpack.js --env production"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "autoprefixer": "10.2.5",
-    "bs-platform": "^9.0.1",
     "copy-webpack-plugin": "8.1.0",
     "css-loader": "5.2.0",
     "html-webpack-plugin": "5.3.1",
     "postcss": "8.2.9",
     "postcss-loader": "5.2.0",
+    "rescript": "9.1.4",
     "style-loader": "2.0.0",
     "tailwindcss": "2.0.4",
     "webpack": "5.28.0",
     "webpack-bundle-analyzer": "4.4.0",
-    "webpack-cli": "4.6.0",
+    "webpack-cli": "4.9.2",
     "webpack-dev-server": "3.11.2"
   },
   "dependencies": {
